@@ -1,0 +1,47 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class SwordLaunchBeam : MonoBehaviour
+{
+    public GameObject enemy;
+    private playerMovement pMScript;
+    public PlayerHealth playerHealth;
+    public GameObject swordprojectile;
+    public GameObject spawnpoint;
+    public Sword swordscript;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        playerHealth = GameObject.FindWithTag("Player").gameObject.GetComponent<PlayerHealth>();
+        pMScript = GameObject.FindWithTag("Player").gameObject.GetComponent<playerMovement>();
+    }
+
+    public void MakeSwordBeam()
+    {
+        Vector3 temp = new Vector3(pMScript.playeranimator.GetFloat("MoveX"), 0, pMScript.playeranimator.GetFloat("MoveZ"));
+        SwordBeam swordbeam = Instantiate(swordprojectile, spawnpoint.transform.position, Quaternion.identity).GetComponent<SwordBeam>();
+        swordbeam.Setup(temp, Vector3.zero);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Mouse0) && playerHealth.currenthealth == playerHealth.health)
+        {
+            if (swordscript != null)
+            {
+                swordscript.PerformAttack();
+            }
+            if (swordscript != null)
+            {
+                swordscript.MakeSwordBeam();
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            swordscript.PerformAttack();
+        }
+    }
+}
